@@ -483,52 +483,64 @@ class Modal {
       const stickyContent = [].slice.call(document.querySelectorAll(SELECTOR_STICKY_CONTENT))
 
       // Adjust fixed content padding
-      this._setElementAttributes(fixedContent, 'paddingRight', 'padding-right', true)
+      $(fixedContent).each((index, element) => {
+        if (this._isShorterThanWindow(element)) {
+          return
+        }
+
+        const actualPadding = element.style.paddingRight
+        const calculatedPadding = $(element).css('padding-right')
+        $(element)
+          .data('padding-right', actualPadding)
+          .css('padding-right', `${parseFloat(calculatedPadding) + this._scrollbarWidth}px`)
+      })
 
       // Adjust sticky content margin
-      this._setElementAttributes(stickyContent, 'marginRight', 'margin-right', false)
+      $(stickyContent).each((index, element) => {
+        if (this._isShorterThanWindow(element)) {
+          return
+        }
+
+        const actualMargin = element.style.marginRight
+        const calculatedMargin = $(element).css('margin-right')
+        $(element)
+          .data('margin-right', actualMargin)
+          .css('margin-right', `${parseFloat(calculatedMargin) - this._scrollbarWidth}px`)
+      })
 
       // Adjust body padding
-      this._setElementAttributes(document.body, 'paddingRight', 'padding-right', true)
+      const actualPadding = document.body.style.paddingRight
+      const calculatedPadding = $(document.body).css('padding-right')
+      $(document.body)
+        .data('padding-right', actualPadding)
+        .css('padding-right', `${parseFloat(calculatedPadding) + this._scrollbarWidth}px`)
     }
 
     $(document.body).addClass(CLASS_NAME_OPEN)
   }
 
-  _setElementAttributes(element, styleProp, cssProperty, add) {
-    $(element).each((index, el) => {
-      if (el !== document.body && window.innerWidth > el.clientWidth + this._scrollbarWidth) {
-        return
-      }
-
-      const actualValue = el.style[styleProp]
-      const calculatedValue = $(el).css(cssProperty)
-      $(el)
-        .data(cssProperty, actualValue)
-        .css(cssProperty, `${parseFloat(calculatedValue) + ((add ? 1 : -1) * this._scrollbarWidth)}px`)
-    })
-  }
-
   _resetScrollbar() {
     // Restore fixed content padding
-    this._resetElementAttributes(SELECTOR_FIXED_CONTENT, 'padding-right')
+    const fixedContent = [].slice.call(document.querySelectorAll(SELECTOR_FIXED_CONTENT))
+    $(fixedContent).each((index, element) => {
+      const padding = $(element).data('padding-right')
+      $(element).removeData('padding-right')
+      element.style.paddingRight = padding ? padding : ''
+    })
 
     // Restore sticky content
-    this._resetElementAttributes(SELECTOR_STICKY_CONTENT, 'margin-right')
-
-    // Restore body padding
-    this._resetElementAttributes(document.body, 'padding-right')
-  }
-
-  _resetElementAttributes(elements, styleProp) {
+    const elements = [].slice.call(document.querySelectorAll(`${SELECTOR_STICKY_CONTENT}`))
     $(elements).each((index, element) => {
-      const value = $(element).data(styleProp)
-      if (typeof value === 'undefined' && element === document.body) {
-        $(element).css(styleProp, '').removeData('margin-right')
-      } else {
-        $(element).css(styleProp, value).removeData(styleProp)
+      const margin = $(element).data('margin-right')
+      if (typeof margin !== 'undefined') {
+        $(element).css('margin-right', margin).removeData('margin-right')
       }
     })
+
+    // Restore body padding
+    const padding = $(document.body).data('padding-right')
+    $(document.body).removeData('padding-right')
+    document.body.style.paddingRight = padding ? padding : ''
   }
 
   _getScrollbarWidth() { // thx d.walsh
@@ -538,6 +550,10 @@ class Modal {
     const scrollbarWidth = scrollDiv.getBoundingClientRect().width - scrollDiv.clientWidth
     document.body.removeChild(scrollDiv)
     return scrollbarWidth
+  }
+
+  _isShorterThanWindow(element) {
+    return window.innerWidth > element.clientWidth + this._scrollbarWidth
   }
 
   // Static
