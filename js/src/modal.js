@@ -483,14 +483,10 @@ class Modal {
       const stickyContent = [].slice.call(document.querySelectorAll(SELECTOR_STICKY_CONTENT))
 
       // Adjust fixed content padding
-      $(fixedContent).each((index, element) => {
-        this._setElementAttributes(element, 'paddingRight', 'padding-right', true)
-      })
+      this._setElementAttributes(fixedContent, 'paddingRight', 'padding-right', true)
 
       // Adjust sticky content margin
-      $(stickyContent).each((index, element) => {
-        this._setElementAttributes(element, 'marginRight', 'margin-right', false)
-      })
+      this._setElementAttributes(stickyContent, 'marginRight', 'margin-right', false)
 
       // Adjust body padding
       this._setElementAttributes(document.body, 'paddingRight', 'padding-right', true)
@@ -500,39 +496,39 @@ class Modal {
   }
 
   _setElementAttributes(element, styleProp, cssProperty, add) {
-    if (element !== document.body && window.innerWidth > element.clientWidth + this._scrollbarWidth) {
-      return
-    }
+    $(element).each((index, el) => {
+      if (el !== document.body && window.innerWidth > el.clientWidth + this._scrollbarWidth) {
+        return
+      }
 
-    const actualValue = element.style[styleProp]
-    const calculatedPadding = $(element).css(cssProperty)
-    $(element)
-      .data(cssProperty, actualValue)
-      .css(cssProperty, `${parseFloat(calculatedPadding) + ((add ? 1 : -1) * this._scrollbarWidth)}px`)
+      const actualValue = el.style[styleProp]
+      const calculatedValue = $(el).css(cssProperty)
+      $(el)
+        .data(cssProperty, actualValue)
+        .css(cssProperty, `${parseFloat(calculatedValue) + ((add ? 1 : -1) * this._scrollbarWidth)}px`)
+    })
   }
 
   _resetScrollbar() {
     // Restore fixed content padding
-    const fixedContent = [].slice.call(document.querySelectorAll(SELECTOR_FIXED_CONTENT))
-    $(fixedContent).each((index, element) => {
-      const padding = $(element).data('padding-right')
-      $(element).removeData('padding-right')
-      element.style.paddingRight = padding ? padding : ''
-    })
+    this._resetElementAttributes(SELECTOR_FIXED_CONTENT, 'padding-right')
 
     // Restore sticky content
-    const elements = [].slice.call(document.querySelectorAll(`${SELECTOR_STICKY_CONTENT}`))
-    $(elements).each((index, element) => {
-      const margin = $(element).data('margin-right')
-      if (typeof margin !== 'undefined') {
-        $(element).css('margin-right', margin).removeData('margin-right')
-      }
-    })
+    this._resetElementAttributes(SELECTOR_STICKY_CONTENT, 'margin-right')
 
     // Restore body padding
-    const padding = $(document.body).data('padding-right')
-    $(document.body).removeData('padding-right')
-    document.body.style.paddingRight = padding ? padding : ''
+    this._resetElementAttributes(document.body, 'padding-right')
+  }
+
+  _resetElementAttributes(elements, styleProp) {
+    $(elements).each((index, element) => {
+      const value = $(element).data(styleProp)
+      if (typeof value === 'undefined' && element === document.body) {
+        $(element).css(styleProp, '').removeData('margin-right')
+      } else {
+        $(element).css(styleProp, value).removeData(styleProp)
+      }
+    })
   }
 
   _getScrollbarWidth() { // thx d.walsh
