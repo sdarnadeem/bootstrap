@@ -30,7 +30,7 @@ for (const file of jsFiles) {
     src: file.replace('.js', ''),
     dist: file.replace('src', 'dist'),
     relativePath: path.relative(srcPath, file),
-    name: filenameToEntity(path.basename(file, '.js')),
+    name: filenameToEntity(path.basename(file, '.js'))
   })
 }
 
