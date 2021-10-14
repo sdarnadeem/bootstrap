@@ -9,9 +9,7 @@ import $ from 'jquery'
 import Util from './util'
 
 /**
- * ------------------------------------------------------------------------
  * Constants
- * ------------------------------------------------------------------------
  */
 
 const NAME = 'modal'
@@ -21,20 +19,6 @@ const EVENT_KEY = `.${DATA_KEY}`
 const DATA_API_KEY = '.data-api'
 const JQUERY_NO_CONFLICT = $.fn[NAME]
 const ESCAPE_KEYCODE = 27 // KeyboardEvent.which value for Escape (Esc) key
-
-const Default = {
-  backdrop: true,
-  keyboard: true,
-  focus: true,
-  show: true
-}
-
-const DefaultType = {
-  backdrop: '(boolean|string)',
-  keyboard: 'boolean',
-  focus: 'boolean',
-  show: 'boolean'
-}
 
 const EVENT_HIDE = `hide${EVENT_KEY}`
 const EVENT_HIDE_PREVENTED = `hidePrevented${EVENT_KEY}`
@@ -64,10 +48,22 @@ const SELECTOR_DATA_DISMISS = '[data-dismiss="modal"]'
 const SELECTOR_FIXED_CONTENT = '.fixed-top, .fixed-bottom, .is-fixed, .sticky-top'
 const SELECTOR_STICKY_CONTENT = '.sticky-top'
 
+const Default = {
+  backdrop: true,
+  keyboard: true,
+  focus: true,
+  show: true
+}
+
+const DefaultType = {
+  backdrop: '(boolean|string)',
+  keyboard: 'boolean',
+  focus: 'boolean',
+  show: 'boolean'
+}
+
 /**
- * ------------------------------------------------------------------------
- * Class Definition
- * ------------------------------------------------------------------------
+ * Class definition
  */
 
 class Modal {
@@ -84,7 +80,6 @@ class Modal {
   }
 
   // Getters
-
   static get VERSION() {
     return VERSION
   }
@@ -94,7 +89,6 @@ class Modal {
   }
 
   // Public
-
   toggle(relatedTarget) {
     return this._isShown ? this.hide() : this.show(relatedTarget)
   }
@@ -219,7 +213,6 @@ class Modal {
   }
 
   // Private
-
   _getConfig(config) {
     config = {
       ...Default,
@@ -545,7 +538,6 @@ class Modal {
   }
 
   // Static
-
   static _jQueryInterface(config, relatedTarget) {
     return this.each(function () {
       let data = $(this).data(DATA_KEY)
@@ -574,9 +566,7 @@ class Modal {
 }
 
 /**
- * ------------------------------------------------------------------------
- * Data Api implementation
- * ------------------------------------------------------------------------
+ * Data API implementation
  */
 
 $(document).on(EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (event) {
@@ -614,9 +604,7 @@ $(document).on(EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (event) {
 })
 
 /**
- * ------------------------------------------------------------------------
  * jQuery
- * ------------------------------------------------------------------------
  */
 
 $.fn[NAME] = Modal._jQueryInterface

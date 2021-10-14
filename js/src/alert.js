@@ -9,9 +9,7 @@ import $ from 'jquery'
 import Util from './util'
 
 /**
- * ------------------------------------------------------------------------
  * Constants
- * ------------------------------------------------------------------------
  */
 
 const NAME = 'alert'
@@ -32,9 +30,7 @@ const CLASS_NAME_FADE = 'fade'
 const CLASS_NAME_SHOW = 'show'
 
 /**
- * ------------------------------------------------------------------------
- * Class Definition
- * ------------------------------------------------------------------------
+ * Class definition
  */
 
 class Alert {
@@ -43,13 +39,11 @@ class Alert {
   }
 
   // Getters
-
   static get VERSION() {
     return VERSION
   }
 
   // Public
-
   close(element) {
     let rootElement = this._element
     if (element) {
@@ -71,7 +65,6 @@ class Alert {
   }
 
   // Private
-
   _getRootElement(element) {
     const selector = Util.getSelectorFromElement(element)
     let parent = false
@@ -117,7 +110,6 @@ class Alert {
   }
 
   // Static
-
   static _jQueryInterface(config) {
     return this.each(function () {
       const $element = $(this)
@@ -146,9 +138,7 @@ class Alert {
 }
 
 /**
- * ------------------------------------------------------------------------
- * Data Api implementation
- * ------------------------------------------------------------------------
+ * Data API implementation
  */
 
 $(document).on(
@@ -158,9 +148,7 @@ $(document).on(
 )
 
 /**
- * ------------------------------------------------------------------------
  * jQuery
- * ------------------------------------------------------------------------
  */
 
 $.fn[NAME] = Alert._jQueryInterface

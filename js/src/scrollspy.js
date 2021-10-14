@@ -9,9 +9,7 @@ import $ from 'jquery'
 import Util from './util'
 
 /**
- * ------------------------------------------------------------------------
  * Constants
- * ------------------------------------------------------------------------
  */
 
 const NAME = 'scrollspy'
@@ -20,18 +18,6 @@ const DATA_KEY = 'bs.scrollspy'
 const EVENT_KEY = `.${DATA_KEY}`
 const DATA_API_KEY = '.data-api'
 const JQUERY_NO_CONFLICT = $.fn[NAME]
-
-const Default = {
-  offset: 10,
-  method: 'auto',
-  target: ''
-}
-
-const DefaultType = {
-  offset: 'number',
-  method: 'string',
-  target: '(string|element)'
-}
 
 const EVENT_ACTIVATE = `activate${EVENT_KEY}`
 const EVENT_SCROLL = `scroll${EVENT_KEY}`
@@ -52,10 +38,20 @@ const SELECTOR_DROPDOWN_TOGGLE = '.dropdown-toggle'
 const METHOD_OFFSET = 'offset'
 const METHOD_POSITION = 'position'
 
+const Default = {
+  offset: 10,
+  method: 'auto',
+  target: ''
+}
+
+const DefaultType = {
+  offset: 'number',
+  method: 'string',
+  target: '(string|element)'
+}
+
 /**
- * ------------------------------------------------------------------------
- * Class Definition
- * ------------------------------------------------------------------------
+ * Class definition
  */
 
 class ScrollSpy {
@@ -78,7 +74,6 @@ class ScrollSpy {
   }
 
   // Getters
-
   static get VERSION() {
     return VERSION
   }
@@ -88,7 +83,6 @@ class ScrollSpy {
   }
 
   // Public
-
   refresh() {
     const autoMethod = this._scrollElement === this._scrollElement.window ?
       METHOD_OFFSET : METHOD_POSITION
@@ -151,7 +145,6 @@ class ScrollSpy {
   }
 
   // Private
-
   _getConfig(config) {
     config = {
       ...Default,
@@ -270,7 +263,6 @@ class ScrollSpy {
   }
 
   // Static
-
   static _jQueryInterface(config) {
     return this.each(function () {
       let data = $(this).data(DATA_KEY)
@@ -293,9 +285,7 @@ class ScrollSpy {
 }
 
 /**
- * ------------------------------------------------------------------------
- * Data Api implementation
- * ------------------------------------------------------------------------
+ * Data API implementation
  */
 
 $(window).on(EVENT_LOAD_DATA_API, () => {
@@ -309,9 +299,7 @@ $(window).on(EVENT_LOAD_DATA_API, () => {
 })
 
 /**
- * ------------------------------------------------------------------------
  * jQuery
- * ------------------------------------------------------------------------
  */
 
 $.fn[NAME] = ScrollSpy._jQueryInterface

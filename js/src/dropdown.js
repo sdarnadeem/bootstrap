@@ -10,9 +10,7 @@ import Popper from 'popper.js'
 import Util from './util'
 
 /**
- * ------------------------------------------------------------------------
  * Constants
- * ------------------------------------------------------------------------
  */
 
 const NAME = 'dropdown'
@@ -78,9 +76,7 @@ const DefaultType = {
 }
 
 /**
- * ------------------------------------------------------------------------
- * Class Definition
- * ------------------------------------------------------------------------
+ * Class definition
  */
 
 class Dropdown {
@@ -95,7 +91,6 @@ class Dropdown {
   }
 
   // Getters
-
   static get VERSION() {
     return VERSION
   }
@@ -109,7 +104,6 @@ class Dropdown {
   }
 
   // Public
-
   toggle() {
     if (this._element.disabled || $(this._element).hasClass(CLASS_NAME_DISABLED)) {
       return
@@ -145,10 +139,7 @@ class Dropdown {
 
     // Totally disable Popper for Dropdowns in Navbar
     if (!this._inNavbar && usePopper) {
-      /**
-       * Check for Popper dependency
-       * Popper - https://popper.js.org
-       */
+      // Check for Popper dependency
       if (typeof Popper === 'undefined') {
         throw new TypeError('Bootstrap\'s dropdowns require Popper (https://popper.js.org)')
       }
@@ -240,7 +231,6 @@ class Dropdown {
   }
 
   // Private
-
   _addEventListeners() {
     $(this._element).on(EVENT_CLICK, event => {
       event.preventDefault()
@@ -348,7 +338,6 @@ class Dropdown {
   }
 
   // Static
-
   static _jQueryInterface(config) {
     return this.each(function () {
       let data = $(this).data(DATA_KEY)
@@ -504,9 +493,7 @@ class Dropdown {
 }
 
 /**
- * ------------------------------------------------------------------------
- * Data Api implementation
- * ------------------------------------------------------------------------
+ * Data API implementation
  */
 
 $(document)
@@ -523,9 +510,7 @@ $(document)
   })
 
 /**
- * ------------------------------------------------------------------------
  * jQuery
- * ------------------------------------------------------------------------
  */
 
 $.fn[NAME] = Dropdown._jQueryInterface
